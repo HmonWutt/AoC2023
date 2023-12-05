@@ -13,98 +13,81 @@ for i in file[2:]:
        new_file+=[tmp]
        tmp=[]
 
-new_file.append(file[-3:])########add the last item ########
+#new_file.append(file[-3:])########add the last item ########
+print("new_file",new_file,"new")
 
 dict ={}
 dict_keys = []
 dict_values = []
-seed_list = []
-soil_list = []
-def map(new_file):
-    seed_list = []
-    soil_list =[]
-    for  map in new_file:
-        if len(map.split(' ')) >0:
-            ranges = int(map.split(' ')[2]) 
-            soil=  int(map.split(' ')[0])
-            seed = int(map.split(' ')[1])
-            seeds = []
-            soils = []
-
-            for i in range(ranges):
-                seed_add = seed+i
-                seeds.append(seed_add)
-                soil_add = soil+i
-                soils.append(soil_add)
-            seed_list+=seeds
-            soil_list+=soils
-    return seed_list, soil_list
-seed_list,soil_list = map(new_file[0][1:])
-
-def linkmaps(list1, list2):
-    linkedmap = {}
-    for ind, i in enumerate(list1):
-        
-        linkedmap[i] = list2[ind]
-    return linkedmap
-
-seed_to_soil = linkmaps(seed_list,soil_list)
-print(seed_to_soil)
-
-soil_list_2, fertilizer_list = map(new_file[1][1:])
-
-soil_to_fertilizer = linkmaps(soil_list_2, fertilizer_list )
-
-fertilizer_list_2, water_list = map(new_file[2][1:])
-
-fertilizer_to_water = linkmaps(fertilizer_list_2,water_list)
-
-water_list_2, light_list = map(new_file[3][1:])
-water_to_light = linkmaps(water_list_2, light_list)
-
-light_list_2, temperature_list = map(new_file[4][1:])
-
-light_to_temperature = linkmaps(light_list_2, temperature_list)
-
-temperature_list_2, humidity_list = map(new_file[5][1:])
-
-temperature_to_humidity = linkmaps(temperature_list_2, humidity_list)
-
-humidity_list_2, location_list = map(new_file[6][1:])
-humidity_to_location = linkmaps(humidity_list_2, location_list)
-      
-seeds_to_be_planted = file[0].split(':')[1].strip()
-seeds_to_be_planted = [int(seed) for seed in seeds_to_be_planted.split(' ')]
-
-seed_to_be_planted_and_corresponding_soil = {}
 
 
-def matched_output(list,dict):
-    matched_output_dict = {}
-    matched_output_list = []
-    for i in list:
+seeds_to_be_planted_1 = file[0].split(':')[1].strip()
+seeds_to_be_planted = [int(seed) for seed in seeds_to_be_planted_1.split(' ')]
+
+print("seeds", seeds_to_be_planted)
+
+
+
+def map(seed_to_plant, seed_soil_range_list):
+    soil_position = seed_to_plant
+    for each in seed_soil_range_list:
+
+        [soil,seed, ranges] = each.split(' ')
+        #print("range", ranges, "seed",seed, "soil", soil)
+        bound = int(ranges)
+        start = int(seed)
+        end = int(seed) +bound
+        #print("start",start, "end", end)
+        if start <= seed_to_plant  <= end: 
+            
+            #soil_index = seed_to_plant  - int(seed)
+            #print(seed_to_plant, seed, soil, bound, start,end)
+            soil_index =   seed_to_plant - start
+            #print("witin range", soil_index)
+            soil_position = int(soil) + soil_index
+            break
     
-        if i in dict:
-            matched_output_list.append(dict[i])
-            matched_output_dict[i] = dict[i]
-            #print("match found", i ,dict[i] )
-        else:
-            matched_output_list.append(i)
-            matched_output_dict[i]= i
-            #print("match not found", i , i )
-    #print(matched_output_dict)
-    return matched_output_list
+    return soil_position
+        
+seed_soil = new_file[0][1:]
+seed_to_soil = []
+for i in seeds_to_be_planted:
+    seed_to_soil.append(map(i,seed_soil))
 
-seed_to_match_to_soil = matched_output(seeds_to_be_planted, seed_to_soil)
+print("seed to soil", seed_to_soil)
+soil_fertilizer = new_file[1][1:]
+soil_to_fertilizer = []
+for i in seed_to_soil:
+    soil_to_fertilizer.append(map(i,soil_fertilizer))
+print("soil to fertilizer", soil_to_fertilizer)
 
-soil_to_match_to_fertilizer = matched_output(seed_to_match_to_soil,soil_to_fertilizer)
+fertilizer_water = new_file[2][1:]
 
-fertilizer_to_match_to_water= matched_output(soil_to_match_to_fertilizer, fertilizer_to_water)
-water_to_match_to_light =  matched_output(fertilizer_to_match_to_water, water_to_light)
-light_to_match_to_temperature = matched_output(water_to_match_to_light, light_to_temperature)
-temperature_to_match_to_humidity = matched_output(light_to_match_to_temperature, temperature_to_humidity)
-humidity_to_match_to_location = matched_output(temperature_to_match_to_humidity, humidity_to_location)
+fertilizer_to_water = []
+for i in soil_to_fertilizer:
+    fertilizer_to_water.append(map(i,fertilizer_water))
+
+print("fert to water", fertilizer_to_water)
+
+water_light = new_file[3][1:]
+water_to_light = []
+for i in fertilizer_to_water:
+    water_to_light.append(map(i,water_light))
+print("water to light", water_to_light)
+
+light_temp = new_file[4][1:]
+light_to_temp = []
+for i in water_to_light:
+    light_to_temp.append(map(i, light_temp))
 
 
+temp_humidity = new_file[5][1:]
+temp_to_humidity =[] 
+for i in light_to_temp:
+    temp_to_humidity.append(map(i, temp_humidity))
 
-print(min(humidity_to_match_to_location))
+humidity_location = new_file[6][1:]
+humidity_to_location = [] 
+for i in temp_to_humidity:
+    humidity_to_location.append(map(i, humidity_location))
+print("part one answer",min(humidity_to_location))

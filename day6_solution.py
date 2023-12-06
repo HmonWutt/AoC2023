@@ -2,7 +2,8 @@ with open('day6_input.txt') as f:
     file = [i.rstrip("\n") for i in f]
 
 clean_file= [i.split(':') for i in file  ]
-
+# time_tmp = [i.strip() for i in clean_file[0]][1].split('  ')  ########for test data
+# distance_tmp= [i.strip() for i in clean_file[1]][1].split('  ') ###########for test data
 time_tmp = [i.strip() for i in clean_file[0]][1].split('   ')
 distance_tmp= [i.strip() for i in clean_file[1]][1].split('   ')
 
@@ -31,3 +32,29 @@ for round, each in enumerate(simulated):
     wins = wins * wins_each_round
 
 print("part one answer:", wins)
+
+
+########################part 2#############################
+print(clean_file)
+
+record_time = int(clean_file[0][1].replace(' ',''))
+
+
+record_distance= int(clean_file[1][1].replace(' ',''))
+
+# reversed = range(record_time, -1,-1)
+# losses_left = 0
+# for ind in reversed:
+#     if (record_time * ind)-ind < record_distance:
+#         losses_left  = (record_time  - ind) +1
+#         break
+
+
+for index in range(record_time):
+
+    if ( record_time- index) * index  < record_distance: 
+        losses_right = index
+    else:
+        break
+
+print("part two answer",(record_time - (losses_right *2) )-1)

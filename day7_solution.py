@@ -24,7 +24,6 @@ for i in file:
     strength_list.sort(reverse= True )
 
     tmp = [hand,score, strength_list]
-
     hand_strength_score.append(tmp)
 
             
@@ -59,14 +58,12 @@ def compare_scores (hand1, hand2):
         
         if hand1_current < hand2_current:
             #print("winner", hand1)
-            
             return hand1
         elif hand1_current > hand2_current:
             #print("winner" , hand2)
             return hand2
         else:
             continue
-
 
 def order_by_score(list,label_strength):
     ordered_list = []
@@ -104,7 +101,7 @@ print("")
 
 hand_strength_score_ = []
 for each in file:
-    [hand_,score_] = each.split(' ')
+    hand_,score_ = each.split(' ')
     count_ = 0
     j_count = 0
     strength_list_ =[]

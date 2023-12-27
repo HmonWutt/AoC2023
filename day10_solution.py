@@ -7,7 +7,6 @@ with open('day10_input.txt') as f:
 row_max = len(directions)-1
 col_max= len(directions[0])-1
 
-print(directions)
 class Node:
     def __init__(self,name, row,col ):
         self.name = name
@@ -28,7 +27,23 @@ class Node:
         if 0<= self.row +1 <= row_max  and 0<=self.col<=col_max :
             return graph[self.row+1][self.col]
         
-     
+    def getAllNeighbours(self,graph):
+        self.all_neighbours=[]
+        self.left = self.findNeighbourLeft(graph)
+        self.up = self.findNeighbourUp(graph)
+        self.down = self.findNeighbourDown(graph)
+        self.right = self.findNeighbourRight(graph)
+        
+        if self.left:
+            self.all_neighbours.append(self.left)
+        if self.right:
+            self.all_neighbours.append(self.right)
+        if self.up:
+            self.all_neighbours.append(self.up)
+        if self.down:
+            self.all_neighbours.append(self.down)
+        return self.all_neighbours
+    
     def getConnectedNeighbours(self, graph):
         self.left = self.findNeighbourLeft(graph)
    
@@ -38,8 +53,8 @@ class Node:
         self.down = self.findNeighbourDown(graph)
         #print("up down left right",self.name,self.row,self.col,self.up.name,self.down.name,self.left.name,self.right.name)
         self.connected_neighbours = []  
-      
-    
+       
+
         if self.name == "S": 
             if self.left and self.left.name not in[ '.',"|","J", "7"]:
               
@@ -99,7 +114,7 @@ class Graph:
         self.graph[row]+=col
        
 directions_dict = Graph()
-print("directions", directions)
+
 node_graph = []
 for row_ind,row in enumerate(directions):
     tmp=[]
@@ -111,10 +126,6 @@ for row_ind,row in enumerate(directions):
         tmp.append(node)
     node_graph.append(tmp)
 
-for ind,i in enumerate(directions_dict.graph):
-    directions_dict.graph[i] += [i.getConnectedNeighbours(node_graph)]
-
-
 for row_ind,node in enumerate(node_graph): #########find starting point###############
     for each in node:
         if each.name == "S":
@@ -124,18 +135,18 @@ visited = set()
 visited.add(start) 
 def dfs(graph, visited, destination): 
 
-    for neighbour in destination.connected_neighbours:  
+    for neighbour in destination.getConnectedNeighbours(graph):  
 
-        if neighbour not in visited: #and neighbour.name != ".": 
-            #print("neighbour name",neighbour.name,neighbour.row, neighbour.col)
+        if neighbour not in visited: 
             visited.add(neighbour)          
             dfs(graph,visited,neighbour)
 
-dfs(directions_dict.graph, visited,start)
+dfs(node_graph, visited,start)
 
-# for every in visited:
-#     print("visited",every.name, every.row, every.col)
-print("PART ONE ANSWER: ",len(visited)/2)
+
+print("PART ONE ANSWER: ",len(visited)//2)
+
+
 
             
 

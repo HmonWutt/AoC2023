@@ -113,7 +113,6 @@ class Graph:
     def addEdge(self,row,col):
         self.graph[row]+=col
        
-directions_dict = Graph()
 
 node_graph = []
 for row_ind,row in enumerate(directions):
@@ -121,8 +120,6 @@ for row_ind,row in enumerate(directions):
     for col_ind, col in enumerate(row):
         name  = directions[row_ind][col_ind]
         node = Node(col,row_ind,col_ind)
-        empty_list = []
-        directions_dict.addEdge(node, [] )
         tmp.append(node)
     node_graph.append(tmp)
 

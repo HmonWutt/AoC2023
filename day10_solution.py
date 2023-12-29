@@ -53,54 +53,57 @@ class Node:
         self.down = self.findNeighbourDown(graph)
         #print("up down left right",self.name,self.row,self.col,self.up.name,self.down.name,self.left.name,self.right.name)
         self.connected_neighbours = []  
+        left_path = ["-","F","L"]
+        right_path = ["-","7","J"]
+        up_path = [ "|","F","7"]
+        down_path = ["|","L","J"]
        
 
         if self.name == "S": 
-            if self.left and self.left.name not in[ '.',"|","J", "7"]:
-              
+            if self.left and self.left.name in left_path:
                 self.connected_neighbours.append(self.left)
              
-            if self.right and self.right.name not in ['.',"L","F","|"]: 
+            if self.right and self.right.name in right_path: 
                 self.connected_neighbours.append(self.right) 
-            if self.up and self.up.name not in ['.','L',"J","-"]: 
+            if self.up and self.up.name  in up_path: 
                 self.connected_neighbours.append(self.up)
-            if self.down and self.down.name not in ['.',"F","7","-"]: 
+            if self.down and self.down.name in down_path: 
                 self.connected_neighbours.append(self.down)
         
         if self.name == "-":
-            if self.left and self.left.name not in ["|",".","J","7"]:
+            if self.left and self.left.name in left_path:
                 self.connected_neighbours.append(self.left)
-            if self.right and self.right.name not in ["|",".","L","F"]:
+            if self.right and self.right.name in right_path:
                 self.connected_neighbours.append(self.right)  
          
         if self.name == "|":
-            if self.up and self.up.name in [ "|","F","7"]:
+            if self.up and self.up.name in up_path:
                 self.connected_neighbours.append(self.up)
-            if self.down and self.down.name in ["|","L","J"]:
+            if self.down and self.down.name in down_path:
                 self.connected_neighbours.append(self.down)
             
         if self.name =="L":
-            if self.up and self.up.name in ["|","F","7"]:
+            if self.up and self.up.name in up_path:
                 self.connected_neighbours.append(self.up)
-            if self.right and self.right.name in ["-","J","7"]:
+            if self.right and self.right.name in right_path:
                 self.connected_neighbours.append(self.right)
 
         if self.name =="J":
-            if self.up and self.up.name in ["|","7","F"]:
+            if self.up and self.up.name in up_path:
                 self.connected_neighbours.append(self.up)
             if self.left and self.left.name in ["-","L" ,"F"]:
                 self.connected_neighbours.append(self.left)
 
         if self.name == "7":
-            if self.left and self.left.name in ["-","F","L"]: 
+            if self.left and self.left.name in left_path: 
                 self.connected_neighbours.append(self.left)
             if self.down and self.down.name in ["|","J","L"]: 
                 self.connected_neighbours.append(self.down)
 
         if self.name == "F":
-            if self.right and self.right.name in ["-","7","J"]:
+            if self.right and self.right.name in right_path:
                 self.connected_neighbours.append(self.right)
-            if self.down and self.down.name in ["|", "L","J"  ]:   
+            if self.down and self.down.name in down_path:   
                 self.connected_neighbours.append(self.down)
                 
         if len(self.connected_neighbours) >0:
@@ -228,8 +231,8 @@ def flood_fill_board(graph, row,col):
             queue.append((row-1,col))
             queue.append((row+1,col))
 
-for e_node in visited:
-    mark_border(board,e_node,directions)
+for every_node in visited:
+    mark_border(board,every_node,directions)
 
 flood_fill_board(board,0,0)
 count = 0

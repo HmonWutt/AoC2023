@@ -77,7 +77,7 @@ def find_smudge(current_ind, next_ind, file):
 
 def count_smudge(current, next, file):
     smudge = 0
-    while current >= 0 and next <= len(file)-2:
+    while current >= 0 and next <= len(file)-2 and smudge <2:
         if find_smudge(current,next,file) >=2:
             break
         if find_smudge(current, next,file) == 0:
@@ -88,6 +88,7 @@ def count_smudge(current, next, file):
             smudge+=1
             current-=1
             next+=1
+    #print(smudge)
     return smudge
 
 
@@ -106,7 +107,7 @@ def check_if_one_smudge(file):
 
 total_2 =0           
 for ind,file in enumerate(original_split[:-1]):
-    print("id-------------------,",ind,len(file))
+    #print("id-------------------,",ind,len(file))
     if check_if_one_smudge(file) != -1:
         current, _ = check_if_one_smudge(file)
         result = (current+1)*100
